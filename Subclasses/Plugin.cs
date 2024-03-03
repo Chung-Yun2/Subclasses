@@ -16,7 +16,7 @@ namespace Subclasses
 
         public override string Prefix { get; } = "Subclasses";
 
-        public override Version Version => new Version(1, 0, 0);
+        public override Version Version => new Version(1, 0, 1);
         
         public override void OnEnabled()
         {

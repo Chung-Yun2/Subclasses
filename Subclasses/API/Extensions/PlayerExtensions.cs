@@ -14,16 +14,18 @@ public static class PlayerExtensions
         player.Health = maxHealth;
     }
 
-    public static void GiveItems(this Player player, Dictionary<ushort, Dictionary<string, ushort>> inventory)
+    public static void GiveItems(this Player player, Dictionary<ushort, Dictionary<string, ushort>> items)
     {
-        foreach (KeyValuePair<ushort, Dictionary<string, ushort>> items in inventory)
+        foreach (var item in items)
         {
-            KeyValuePair<string, ushort> item = items.Value.FirstOrDefault(item => UnityEngine.Random.Range(0, 101) <= item.Value);
-            
-            if (!CustomItem.TryGive(player, item.Key))
-                player.AddItem((ItemType)Enum.Parse(typeof(ItemType), item.Key));
-
-            break;
+            if (UnityEngine.Random.Range(0, 101) <= item.Value.Values.First())
+                if (!CustomItem.TryGive(player, item.Value.Keys.First(), false))
+                {
+                    if (Enum.TryParse(item.Value.Keys.First(), out ItemType itemType))
+                        player.AddItem(itemType);
+                    else
+                        Log.Error($"{item.Value.Keys.First()} is not item");
+                }
         }
     }
 }
